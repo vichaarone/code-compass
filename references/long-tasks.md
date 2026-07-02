@@ -11,7 +11,8 @@ reading only the repository should be able to continue the work.**
 ## Durable state: three artifacts
 
 Keep these at the project root (or a `.progress/` dir) from the first hour
-of any multi-session task:
+of any multi-session task. Ready-to-copy templates for all three live in
+this skill's [assets/](../assets/) directory:
 
 ### 1. `PLAN.md` — what "done" means
 The full plan with runnable completion checks per step (format in
@@ -110,6 +111,16 @@ While running unattended, classify every action:
   (credentials, a product decision), record it under `Blockers`, pick the
   next unblocked item, and keep moving. Never guess credentials or invent
   product decisions to stay busy; never idle when unblocked work remains.
+
+## Parallelizing safely
+
+"One item at a time" applies per worker, not per project. If your
+environment offers subagents or git worktrees, you may parallelize items
+that touch **disjoint files** — one item per isolated context or worktree,
+each running its own full loop. Rules: never let two contexts edit the same
+files; merge only verified work; the orchestrating context makes decisions
+and holds summaries, not raw exploration. When in doubt, stay serial —
+coordination bugs cost more than parallelism saves.
 
 ## Macro loop detection
 

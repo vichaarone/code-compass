@@ -21,6 +21,7 @@ code-compass encodes the countermeasures as a compact methodology, distilled fro
 ```
 code-compass/
 ├── SKILL.md                     # The operating loop: Orient → Plan → Act → Verify → Record
+├── assets/                      # Ready-to-copy templates: PLAN.md, PROGRESS.md, init.sh
 └── references/                  # Loaded on demand (progressive disclosure)
     ├── research.md              # Where to look: ground-truth hierarchy, codebase orientation,
     │                            #   git archaeology, researching libraries without hallucinating
@@ -69,6 +70,35 @@ Ask your agent: *"Which skills do you have available?"* — or just give it a co
 | Retries the same failed fix five times | Loop-breaker: 2 strikes → new hypothesis; 3 hypotheses → question assumptions |
 | Loses everything at context compaction | PLAN.md + PROGRESS.md + git checkpoints; any fresh session resumes cold |
 | Stops when work "looks done" | Stops when the named check passes, end to end |
+
+## How it compares
+
+Several strong open-source projects also aim to make coding agents better. They solve different problems, and code-compass borrows ideas from the best of them (see [CHANGELOG](CHANGELOG.md)). Surveyed July 2026:
+
+| | **code-compass** | [superpowers](https://github.com/obra/superpowers) | [anthropics/skills](https://github.com/anthropics/skills) | [spec-kit](https://github.com/github/spec-kit) | [SuperClaude](https://github.com/SuperClaude-Org/SuperClaude_Framework) | [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) |
+|---|---|---|---|---|---|---|
+| **What it is** | One skill: how an agent should *think* while engineering | Skills framework + dev workflow (11+ skills, slash commands) | Official example skills (documents, design, technical tasks) | Spec-driven development CLI + artifact templates | Config framework: 30 commands, 20 agents, 8 MCP servers | Agile-lifecycle framework with 12+ agent personas |
+| **Install & runtime deps** | `git clone` one folder; zero dependencies | Plugin marketplace, per-platform installers | Plugin / API upload | Python 3.11+, `uv`, CLI scaffolds `.specify/` | `pipx` + optional MCP servers | `npx` + Node 20 + Python |
+| **Idle context cost** | ~100 tokens (metadata only) | Metadata for 11+ skills | Per-skill | Slash-command templates | Injected behavioral config (heaviest) | Persona definitions |
+| **Research methodology** (where to look, ground-truth hierarchy, anti-hallucination) | ✅ dedicated reference | ❌ | ❌ | ❌ | Partial (web "Deep Research" mode) | ❌ |
+| **Planning** | ✅ check-first, risk-first | ✅ brainstorm → write-plan | ❌ | ✅✅ core focus | ✅ commands | ✅✅ core focus |
+| **Verification + anti-reward-hacking rules** | ✅ hard rules, research-grounded | ✅ verification-before-completion | ❌ | ❌ | Partial | Partial (test architect) |
+| **Debugging method** | ✅ hypothesis loop + loop-breaker | ✅ systematic-debugging | ❌ | ❌ | ❌ | ❌ |
+| **Long-horizon / multi-session autonomy** | ✅✅ dedicated protocol (state files, session rituals, macro loop detection) | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Works unattended** | ✅ designed for it | Assumes human collaboration | n/a | Human gate at each phase | Assumes human at keyboard | Guided, human-led |
+| **Portability** | Any [Agent Skills](https://agentskills.io) tool — plain folder | 10 platforms via installers | Claude-centric | 30+ agents via its CLI | Claude Code | Claude Code, Cursor, web bundles |
+| **License** | MIT | MIT | Apache-2.0 / source-available | MIT | MIT | MIT |
+
+### Why code-compass
+
+1. **It's the only one that treats long-horizon autonomy as a first-class problem.** Every other project assumes a human between phases. code-compass assumes the opposite — your memory *will* be wiped mid-task — and provides the full survival protocol: durable state files, session start/end rituals, git checkpointing, blocked-vs-idle rules, and cross-session loop detection.
+2. **It's the only one that teaches research methodology.** The most common agent failure is acting on remembered APIs instead of installed reality. No other project addresses "where to look": the ground-truth hierarchy, codebase orientation passes, git archaeology, and version-pinned library research.
+3. **Anti-reward-hacking is explicit and hard.** Grounded in [published research](https://arxiv.org/html/2605.02964) on agents deleting tests and gaming checks — not just "verify your work" but an enumerated list of forbidden moves.
+4. **Zero infrastructure.** No CLI to install, no npm/pipx packages, no MCP servers, no marketplace account. A plain spec-compliant folder that works identically in 32+ tools. Nothing to version-sync, nothing to break.
+5. **Token frugality by design.** The entire skill active costs less context than most frameworks cost idle. Methodology loads in layers only when the situation calls for it — and degraded context is itself a failure mode the skill is defending against.
+6. **Composable, not competing.** Because it's pure methodology, it runs *underneath* the others: use spec-kit's artifact pipeline or superpowers' slash commands on top; code-compass governs how the agent thinks while executing them.
+
+**When another tool fits better:** you want ready-made slash-command workflows and subagent orchestration today → superpowers. You want a full spec-artifact pipeline for greenfield products → spec-kit. You want an MCP-integrated toolchain → SuperClaude. You want simulated agile team roles → BMAD.
 
 ## Design principles
 

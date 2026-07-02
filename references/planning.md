@@ -18,6 +18,15 @@ Then split every ambiguity into one of two bins:
   see, trade-offs between valid approaches with different costs. Ask —
   *before* building, in one batch, not one interruption at a time.
 
+### For large or vague features: interview first
+
+When the request is big and underspecified ("build a dashboard", "add
+billing"), don't guess a spec — elicit one. Interview the user in one
+focused batch: the hard trade-offs, edge cases, and behavior decisions they
+haven't considered yet — not things the codebase already answers. Write the
+outcome down as the spec (it becomes the *Done means* section of the plan).
+Minutes of interviewing beat hours of building the wrong thing.
+
 ## Step 2 — Define "done" as runnable checks
 
 Before any code, name the checks that will prove completion:
@@ -112,5 +121,6 @@ For work spanning sessions, keep `PLAN.md` at the project root:
 - <plan changes, surprises, constraints — dated>
 ```
 
-Checked boxes must mean *verified*, never *attempted*. See
+Checked boxes must mean *verified*, never *attempted*. A ready-to-copy
+version lives at [assets/PLAN.template.md](../assets/PLAN.template.md). See
 [long-tasks.md](long-tasks.md) for how this file is used across sessions.

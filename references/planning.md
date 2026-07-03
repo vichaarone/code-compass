@@ -98,7 +98,8 @@ Plans are predictions. When implementation reveals the prediction was wrong:
 
 ## Plan format for long tasks
 
-For work spanning sessions, keep `PLAN.md` at the project root:
+For work spanning sessions, keep a `PLAN.md` state file (location and
+commit rules in [long-tasks.md](long-tasks.md)):
 
 ```markdown
 # Task: <one-line goal>

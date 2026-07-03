@@ -10,9 +10,17 @@ reading only the repository should be able to continue the work.**
 
 ## Durable state: three artifacts
 
-Keep these at the project root (or a `.progress/` dir) from the first hour
-of any multi-session task. Ready-to-copy templates for all three live in
-this skill's [assets/](../assets/) directory:
+Size the ceremony to the task: for work that merely spills into a second
+sitting, one lightweight notes file (or the harness's own task list) is
+enough. For genuinely long or unattended runs, keep all three artifacts
+below from the first hour.
+
+**Location:** state files are agent workspace, not product. Default to a
+gitignored `.progress/` directory (or the harness's scratch dir) so they
+never land in the user's git history; put them at the repo root and commit
+them only if the user wants the trail tracked. Commit *code* increments —
+not your scratch. Ready-to-copy templates for all three live in this
+skill's [assets/](../assets/) directory:
 
 ### 1. `PLAN.md` — what "done" means
 The full plan with runnable completion checks per step (format in

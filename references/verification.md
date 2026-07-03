@@ -8,6 +8,17 @@ and shows the output.
 **Verified means: the check ran, you read its actual output, and the output
 demonstrates the required behavior.** Anything less is a prediction.
 
+## Predict, then run
+
+Before running any check, state the result you expect — exit 0, 41 passing,
+a 200 with a JWT in the body. Then compare. A match confirms both the code
+*and* your model of it. A pass you didn't predict, or one that passes for a
+reason that surprises you, is an observation to investigate, not a
+verification — "green for the wrong reason" is how gamed and vacuous checks
+slip through. A prediction you got wrong is the most useful output a run
+can produce: it means your model of the system needs updating before you
+build anything else on it.
+
 ## The feedback hierarchy
 
 Prefer stronger feedback when it exists; combine layers when it matters:
@@ -24,8 +35,7 @@ Prefer stronger feedback when it exists; combine layers when it matters:
 4. **Judgment (self- or LLM-review)** — for fuzzy criteria like tone or
    readability. Weakest layer; never the only one.
 
-Compiling is not verified. Unit tests passing is often not verified either —
-**exercise the change end-to-end at least once** before claiming success.
+Compiling is not verified, and unit tests passing often isn't either.
 
 ## For bug fixes: red, then green
 
@@ -43,8 +53,13 @@ evidence. Never:
 
 - **Delete, skip, comment out, or weaken a failing test** to make the suite
   pass. If you believe the test itself is wrong, *say so explicitly* and get
-  confirmation (or prove it against the spec); a silent test edit is the
-  single most corrosive thing an agent can do.
+  confirmation; a silent test edit is the single most corrosive thing an
+  agent can do. When no one is available to confirm (unattended run), you
+  have exactly two honest moves: prove the test wrong against the documented
+  spec — README, ticket, git history — and record that evidence where the
+  user will see it (commit message, progress file, final report); or leave
+  the test failing and log it as a blocker. Never edit a test to green on
+  your own authority.
 - **Hardcode expected values** or special-case the test's inputs in
   production code.
 - **Mock the very behavior under test**, or widen mocks until the test
@@ -88,7 +103,10 @@ Before declaring any task done:
 5. **Probe the edges**: empty input, null/None, zero, one, many, unicode,
    concurrent access, the unhappy path. Not every edge needs a test — but
    you should be able to say what happens at each.
-6. **State what was NOT done**: skipped checks, known limitations, out-of-
+6. **Run a pre-mortem**: ask "if this is subtly wrong, where would it be?"
+   Name the single likeliest place it's broken and confirm you actually
+   checked that spot. If you can't name one, you haven't looked hard enough.
+7. **State what was NOT done**: skipped checks, known limitations, out-of-
    scope items noted along the way.
 
 ## Independent review

@@ -11,7 +11,7 @@ description: >-
 license: MIT
 metadata:
   author: vichaarone
-  version: "1.1.0"
+  version: "1.2.0"
   homepage: https://github.com/vichaarone/code-compass
 ---
 
@@ -39,8 +39,9 @@ from the installed version, not from recall.
   sites before modifying anything.
 - Read neighboring code and tests to learn the project's conventions and
   intended behavior.
-- Stop orienting when you can predict what your change will do and name every
-  file it touches.
+- Stop orienting when you can predict what your change will do, name every
+  file it touches, and say what existing behavior might break and how you'd
+  catch it.
 
 Deep dive: [references/research.md](references/research.md) — the ground-truth
 hierarchy, codebase orientation passes, git archaeology, external research.
@@ -77,6 +78,10 @@ Deep dive: [references/implementation.md](references/implementation.md).
 "Looks done" is the weakest signal available and the source of most agent
 failures. Run the check. Read the output. Then decide.
 
+- **Predict first.** Before running a check, state the result you expect
+  (exit 0, 41 passed, a 200). A pass you didn't predict — or one that passes
+  for a reason that surprises you — is an observation to investigate, not a
+  verification.
 - Prefer deterministic feedback (build, types, lints, tests) over visual
   feedback over judgment.
 - Exercise the changed behavior end-to-end at least once — compiling is not
@@ -106,25 +111,25 @@ autonomous session protocol (session rituals, state files, loop detection).
 
 These apply at every scale, always:
 
-1. **Never claim success without having run the verifying check.** If you
-   could not run it, say so explicitly.
+1. **Report reality, never a prediction.** Claim success only for a check
+   you actually ran and whose output you read. Failing tests, skipped steps,
+   partial work — state them plainly, with output. If you could not run the
+   check, say so explicitly.
 2. **Never delete, skip, weaken, or special-case a test to make it pass.**
    If a test seems wrong, say so and confirm — changing it silently is
-   falsifying evidence.
+   falsifying evidence. Running unattended: either prove the test wrong
+   against the documented spec and record that reasoning where the user
+   will see it, or leave it failing and log it as a blocker. Never edit it
+   to green on your own authority.
 3. **Fix causes, not symptoms.** Catching-and-ignoring an error, hardcoding
    an expected value, or suppressing a warning is a symptom patch.
 4. **After 2 failed attempts at the same approach, stop repeating it.**
    Write down what each attempt proved, then re-orient. Repetition without
    new information is a loop, not persistence.
-5. **Prefer looking over guessing.** Reading the file costs seconds; a wrong
-   guess costs the whole cycle that builds on it.
-6. **Distinguish reversible from irreversible.** Proceed autonomously on
+5. **Distinguish reversible from irreversible.** Proceed autonomously on
    anything git can undo. Stop and ask before destructive or outward-facing
    actions: force-pushes, deletions of files you didn't create, dropping
    data, publishing, or sending anything external.
-7. **Report reality.** Failing tests, skipped steps, partial work — state
-   them plainly with output. Optimistic summaries destroy the trust that
-   autonomy depends on.
 
 ## Calibration
 
@@ -137,13 +142,8 @@ Match process weight to task weight:
 | Multi-file feature, unfamiliar code, or ambiguous request | Full loop, written plan |
 | Hours-long or multi-session work | Full loop + [long-task protocol](references/long-tasks.md) |
 
-## When to load references
-
-| Situation | Read |
-|---|---|
-| Unfamiliar codebase; need to find where something lives; researching a library | [references/research.md](references/research.md) |
-| Multi-file, risky, or ambiguous task; choosing between approaches | [references/planning.md](references/planning.md) |
-| About to write or modify code | [references/implementation.md](references/implementation.md) |
-| A failure whose cause isn't immediately obvious | [references/debugging.md](references/debugging.md) |
-| About to say "done", or designing the task's checks | [references/verification.md](references/verification.md) |
-| Task spans hours, sessions, or runs unattended | [references/long-tasks.md](references/long-tasks.md) |
+Spend thinking the same way. **Slow down and reason on paper when**: the
+action is irreversible or outward-facing; you can't yet predict its full
+effect; two attempts have failed; or the evidence contradicts your model.
+**Act now when** the step is reversible, familiar, and predictable — then
+let the check, not more deliberation, tell you whether you were right.

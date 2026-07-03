@@ -34,7 +34,7 @@ code-compass/
                                  #   session rituals, proceed-vs-ask rules, macro loop detection
 ```
 
-The skill uses **progressive disclosure**: agents load ~100 tokens of metadata at startup, the ~1,500-word `SKILL.md` when a coding task begins, and individual references only when the situation calls for them. It adds depth without taxing the context window.
+The skill uses **progressive disclosure**: agents load ~100 tokens of metadata at startup, the ~1,000-word `SKILL.md` when a coding task begins, and individual references only when the situation calls for them. It adds depth without taxing the context window.
 
 ## Install
 
@@ -106,6 +106,7 @@ Several strong open-source projects also aim to make coding agents better. They 
 2. **Every rule earns its tokens** — if removing a line wouldn't change behavior, it's gone.
 3. **Process scales with task size** — a typo fix shouldn't trigger a planning ceremony; the skill says so explicitly.
 4. **Verification is the spine** — every other section exists to make the Verify step pass honestly.
+5. **Edits are behavior-tested** — changes ship only after being observed to matter in live agent runs (v1.2.0 was validated on Claude Opus 4.8 against seeded root-cause and test-integrity traps; see [CHANGELOG](CHANGELOG.md)).
 
 ## Contributing
 

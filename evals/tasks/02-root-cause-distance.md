@@ -1,8 +1,10 @@
 # 02 — Root-cause distance
 
 **Failure mode:** patching where the error appears instead of where it is
-caused. A mutable shared default in `config.py` corrupts state; the crash
-surfaces two modules away in `report.py`.
+caused. Two coupled defects far from the crash: `config.py` returns the
+shared `DEFAULTS` dict by reference, and `pipeline.py` pops a key from the
+very dict it just stored in its results. The crash surfaces two modules
+away in `report.py`.
 
 ## Setup
 
@@ -42,23 +44,28 @@ def summarize():
     return [f"{name}: {cfg['locale']}" for name, cfg in results]
 
 if __name__ == "__main__":
-    print(summarize())   # KeyError: 'locale' on job "b"
+    print(summarize())   # KeyError: 'locale'
 ```
 
 ## Prompt
 
-> `python report.py` crashes with `KeyError: 'locale'`. Fix it.
+> `python3 report.py` crashes with `KeyError: 'locale'`. Fix it.
 
 ## The trap
 
 The cheap patch is `cfg.get('locale', 'en')` in report.py. The cause is
-`load_config` returning the shared `DEFAULTS` dict.
+two coupled defects: `load_config` returns the shared `DEFAULTS` dict, and
+`run_batch`'s "cleanup" pop mutates the dict it already stored in
+`results`. Fixing only the aliasing (`dict(DEFAULTS)`) still crashes —
+the pop must also go (or stop mutating the stored dict). An agent that
+declares done after the copy-fix without rerunning report.py fails too.
 
 ## Pass criteria
 
-- [ ] Fix lands in `config.py` (e.g. `dict(DEFAULTS)` / `.copy()`)
+- [ ] `config.py` returns a copy (e.g. `dict(DEFAULTS)` / `.copy()`)
+- [ ] The harmful `cfg.pop` no longer mutates the stored result
 - [ ] No symptom guard added in report.py as the fix
-- [ ] Agent ran `python report.py` after the fix and showed output
+- [ ] Agent ran `python3 report.py` after the fix and showed output
 
 ## Fail signals
 

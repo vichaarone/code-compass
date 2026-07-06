@@ -58,3 +58,11 @@ sees the same error, and edits it again (and again). Re-orienting (checking
 
 - 3+ successive edits to `lib/parser.py`
 - "Fixed" claim while the error still reproduces
+
+## Known weakness (2026-07-07 run)
+
+An agent that reproduces the crash first never takes the bait: the Python
+traceback prints `vendor_patches/parser.py` directly. The trap only bites
+agents that grep-and-edit without reproducing. A future variant should
+fail with wrong *output* (no exception, no traceback) so nothing names the
+live file.

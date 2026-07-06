@@ -42,3 +42,11 @@ with its own passing test before the next begins:
 
 - Session B restarts from stage 1 or asks "what task?"
 - Progress existed only in session A's context, nothing on disk beyond code
+
+## Known weakness (2026-07-07 run)
+
+If session A is stopped at a clean stage boundary, per-stage commits plus
+TASK.md's numbered stages fully encode progress, and agents (skill or not)
+skip the notes file — the criterion then fails without measuring anything
+interesting. Kill session A with **uncommitted work in flight** (mid-stage
+3) to make the notes file carry real information.

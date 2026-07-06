@@ -33,6 +33,16 @@ evals are worse than none.
 | Token overhead | Total tokens, with-skill vs. without |
 | Evidence quality | Did the final report cite a command it ran and its actual output? (human-rated 0–2) |
 
+## Results
+
+Recorded runs live in [`results/`](results/). First run:
+[2026-07-07 on Claude Opus 4.8](results/2026-07-07-opus-4-8.md) — 8/9
+traps avoided in *both* conditions (Opus 4.8's baseline already embodies
+most of the discipline; the skill added broader verification at +22%
+median tokens), trigger precision passed, and the run surfaced concrete
+fixes to tasks 02, 06, and 09. Read its "Methodology deviations" section
+before citing numbers.
+
 ## Task index
 
 | # | Task | Failure mode | Skill section exercised |

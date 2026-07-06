@@ -1,6 +1,6 @@
 # 🧭 code-compass
 
-**A portable Agent Skill that teaches coding agents to think like senior engineers** — where to look when researching, how to plan and verify instead of guess and hope, how to debug from evidence, and how to run long autonomous tasks across sessions without losing state.
+**The minimal dependable layer that makes any coding agent behave better.** One portable Agent Skill that teaches agents to think like senior engineers — where to look when researching, how to plan and verify instead of guess and hope, how to debug from evidence, and how to run long autonomous tasks across sessions without losing state. Not a framework, not a registry, not a toolchain: the smallest trustworthy behavior layer, designed to run underneath whatever else you use.
 
 Works with any tool that supports the open [Agent Skills](https://agentskills.io) standard: Claude Code, OpenAI Codex CLI, Cursor, GitHub Copilot, Gemini CLI, and 30+ others.
 
@@ -22,6 +22,9 @@ code-compass encodes the countermeasures as a compact methodology, distilled fro
 code-compass/
 ├── SKILL.md                     # The operating loop: Orient → Plan → Act → Verify → Record
 ├── assets/                      # Ready-to-copy templates: PLAN.md, PROGRESS.md, init.sh
+├── evals/                       # Seeded-trap eval harness: 10 tasks, protocol, results template
+├── SECURITY.md                  # What this skill contains, never does, and how to audit it
+├── COMPATIBILITY.md             # Per-tool install paths and honest test status
 └── references/                  # Loaded on demand (progressive disclosure)
     ├── research.md              # Where to look: ground-truth hierarchy, codebase orientation,
     │                            #   git archaeology, researching libraries without hallucinating
@@ -41,10 +44,10 @@ The skill uses **progressive disclosure**: agents load ~100 tokens of metadata a
 ### Claude Code
 
 ```bash
-git clone https://github.com/vichaarone/code-compass.git ~/.claude/skills/code-compass
+git clone --branch v1.3.0 --depth 1 https://github.com/vichaarone/code-compass.git ~/.claude/skills/code-compass
 ```
 
-Per-project instead: clone into `.claude/skills/code-compass` inside the repo.
+Per-project instead: clone into `.claude/skills/code-compass` inside the repo. Pinning to a release tag (rather than `main`) is recommended — see [SECURITY.md](SECURITY.md).
 
 ### Any other Agent Skills-compatible tool
 
@@ -99,6 +102,24 @@ Several strong open-source projects also aim to make coding agents better. They 
 6. **Composable, not competing.** Because it's pure methodology, it runs *underneath* the others: use spec-kit's artifact pipeline or superpowers' slash commands on top; code-compass governs how the agent thinks while executing them.
 
 **When another tool fits better:** you want ready-made slash-command workflows and subagent orchestration today → superpowers. You want a full spec-artifact pipeline for greenfield products → spec-kit. You want an MCP-integrated toolchain → SuperClaude. You want simulated agile team roles → BMAD.
+
+## Works well with
+
+code-compass is deliberately static and self-contained — it will never fetch live docs, manage skill installs, or run a memory database. Compose it with tools that do:
+
+| Need | Companion | Why it pairs |
+|---|---|---|
+| Fresh, version-specific library docs | [Context7](https://github.com/upstash/context7) | code-compass says *confirm the API against ground truth*; Context7 is a retrieval source for it when the installed source isn't enough |
+| Heavier persistent planning memory | [planning-with-files](https://github.com/OthmanAdi/planning-with-files) / [persist-os](https://github.com/Karthick-Ramachandran/persist-os) | Same durable-state philosophy as the long-task protocol, with more machinery when you want it |
+| Skill install lifecycle + security scanning | [asm](https://github.com/luongnv89/asm) | Manages and audits skills across agents; code-compass is a clean, scannable target |
+| Spec/artifact pipelines, slash-command workflows | [spec-kit](https://github.com/github/spec-kit) / [superpowers](https://github.com/obra/superpowers) | They structure *what* to build; code-compass governs *how the agent thinks* while executing |
+
+## Trust
+
+- **Evals:** a public seeded-trap harness lives in [`evals/`](evals/) — 10 reproducible tasks, one per documented failure mode, scored with-skill vs. without. Results welcome via PR.
+- **Security:** the full audit surface and what-this-never-does list is in [SECURITY.md](SECURITY.md).
+- **Compatibility:** per-tool install paths with honest tested/untested status in [COMPATIBILITY.md](COMPATIBILITY.md).
+- **Releases:** versions are tagged; pin installs to a tag.
 
 ## Design principles
 

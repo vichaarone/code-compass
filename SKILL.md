@@ -11,7 +11,7 @@ description: >-
 license: MIT
 metadata:
   author: vichaarone
-  version: "1.2.0"
+  version: "1.3.0"
   homepage: https://github.com/vichaarone/code-compass
 ---
 

@@ -1,5 +1,37 @@
 # Changelog
 
+## 1.3.0 — 2026-07-07
+
+Trust-infrastructure release, driven by a comparative study of ~100
+repositories in the agent-skills ecosystem. The study's core finding: the
+skill's methodology is unusually complete for its size, and the highest-value
+next step is **not to make it bigger but to make it measurable and
+trustable**. Accordingly, `SKILL.md` and all six references are **unchanged**
+in this release — every addition is repo-level evidence around the same core.
+
+- **Eval harness (`evals/`)** — 10 reproducible seeded-trap tasks, one per
+  documented agent failure mode (hallucinated API, root-cause distance,
+  test-integrity baits, end-to-end gap, loop bait, helper reuse, ambiguous
+  spec, session resume, false trigger), plus a run protocol, scoring
+  metrics, and a results template. Formalizes the ad-hoc behavioral testing
+  used to validate v1.2.0.
+- **`SECURITY.md`** — explicit security model: what the skill contains,
+  what it never does (no network, no execution, no telemetry, no
+  dependencies), how to audit all of it, tag-pinned installs, and the
+  gitignored-state-files policy.
+- **`COMPATIBILITY.md`** — converts the broad "32+ tools" portability claim
+  into a per-tool matrix with install paths and honest tested/untested
+  status (only Claude Code currently earns a ✅).
+- **README: "Works well with"** — positions the skill as composable rather
+  than competing: Context7 for fresh docs, planning-with-files/persist-os
+  for heavier memory, asm for skill lifecycle/scanning, spec-kit/superpowers
+  for workflow layers on top.
+- **README: sharpened positioning** — "the minimal dependable layer that
+  makes any coding agent behave better"; new Trust section linking evals,
+  security, and compatibility.
+- **Install ergonomics** — installs now documented against release tags
+  (`--branch v1.3.0 --depth 1`) instead of tracking `main`.
+
 ## 1.2.0 — 2026-07-03
 
 Changes driven by live testing on Claude Opus 4.8: a behavioral trial (a
